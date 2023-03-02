@@ -1,7 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, ScrollView } from "react-native";
+import { useEffect, useState } from "react";
+import { Text, View, ScrollView, Alert } from "react-native";
 import { DAY_SIZE, HabitDay } from "../components/HabitDay";
 import { Header } from "../components/Header";
+import { api } from "../lib/axios";
 import { generationDatesFromYearBeginning } from "../utils/generation-dates-from-year-beginning";
 
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
@@ -10,7 +12,29 @@ const minimunSummaryDates = 18 * 5;
 const amountOfDaysTofill = minimunSummaryDates - datesFromYearStart.length;
 
 export function Home() {
+  const [loading, setLoading] = useState(true);
+  const [summary, setSummary] = useState(null);
+
   const { navigate } = useNavigation();
+
+  async function fetchDate() {
+    try {
+      setLoading(true);
+
+      const response = await api.get("/summary");
+      console.log(response.data);
+      setSummary(response.data);
+    } catch (error) {
+      Alert.alert("Ops", "Não foi possivel carregar o sumario de habitos.");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchDate();
+  }, []);
 
   return (
     <View className="flex-1 bg-background px-8 pt-16">
