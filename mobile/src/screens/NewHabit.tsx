@@ -40,7 +40,7 @@ export function NewHabit() {
   async function handleCreateNewHabit() {
     try {
       if (!title.trim() || weekDays.length === 0) {
-        Alert.alert("Erro", "Os Campos estão vazios");
+        return Alert.alert("Erro", "Os Campos estão vazios");
       }
 
       await api.post("/habit", { title, weekDays });

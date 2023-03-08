@@ -31,7 +31,6 @@ export function Home() {
       setLoading(true);
 
       const response = await api.get("/summary");
-      console.log(response.data);
       setSummary(response.data);
     } catch (error) {
       Alert.alert("Ops", "Não foi possivel carregar o sumario de habitos.");
@@ -73,9 +72,6 @@ export function Home() {
               const dayWithHabits = summary.find((day) => {
                 return dayjs(date).isSame(day.date, "day");
               });
-              {
-                console.log(dayWithHabits?.complete, dayWithHabits?.amount);
-              }
               return (
                 <HabitDay
                   key={date.toISOString()}
